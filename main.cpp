@@ -1,40 +1,48 @@
 #include <iostream>
 #include "Stack.h"
 #include "DoubleStack.h"
+
 using namespace std;
+
+template<typename T>
+void testPointer(Structure<T> *structure) {
+    structure->push("aaa");
+    structure->push("bbb");
+    structure->push("ccc");
+    cout << structure << endl;
+    structure->pop();
+    cout << structure << endl;
+
+}
+
+template<typename T>
+void testLink(Structure<T> &structure) {
+    dynamic_cast<Stack<T> &>(structure).push("ddd");
+    dynamic_cast<Stack<T> &>(structure).push("eee");
+    dynamic_cast<Stack<T> &>(structure).push("fff");
+    cout << dynamic_cast<Stack<T> &>(structure) << endl;
+    dynamic_cast<Stack<T> &>(structure).pop();
+    cout << dynamic_cast<Stack<T> &>(structure) << endl;
+
+}
 
 int main() {
 
-    Stack<string> stackList("1");
-    DoubleStack<int> doubleStack(1);
+    cout << "Stack" << endl;
 
-    doubleStack.push(2);
-    doubleStack.push(3);
-    doubleStack.push(4);
+    auto testStackPointer = new Stack<string>("1");
+    testPointer(testStackPointer);
 
-    stackList.push("2");
-    stackList.push("3");
-    stackList.push("4");
+    auto testStackLink = new Stack<string>("2");
+    testLink(*testStackLink);
 
+    cout << "DoubleStack" << endl;
 
-    Stack<string> listList = stackList;
-    Stack<string> tList = move(stackList);
+    auto testDoubleStackPointer = new DoubleStack<string>("3");
+    testPointer(testDoubleStackPointer);
 
-    DoubleStack<int> doubleList = doubleStack;
-    DoubleStack<int> doubletList = move(doubleStack);
-
-    listList.push("5");
-    tList.pop();
-
-    doubleList.push(5);
-    doubletList.pop();
-
-    cout << stackList << endl;
-    cout << listList << endl;
-    cout << tList << endl;
-    cout << doubleStack << endl;
-    cout << doubleList << endl;
-    cout << doubletList << endl;
+    auto testDoubleStackList = new DoubleStack<string>("4");
+    testLink(*testDoubleStackList);
 
     return 0;
 }
