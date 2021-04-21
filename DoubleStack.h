@@ -5,19 +5,16 @@ template<typename T>
 class DoubleStack : public Structure<T>{
 public:
     DoubleNode<T> *pTop;
-    DoubleNode<T> *lst;
     DoubleNode<T> *nxt;
     int size = 0;
 
     void init(T value) {
         auto *root = new DoubleNode<T>;
         root->value = value;
-        root->next = root;
+        root->next = nullptr;
         root->last = nullptr;
         pTop = root;
-        lst = root;
         nxt = nullptr;
-        lst->next = pTop;
         size++;
     }
 
@@ -31,7 +28,6 @@ public:
 
     DoubleStack() {
         pTop = nullptr;
-        lst = nullptr;
         nxt = nullptr;
     }
 
@@ -49,11 +45,9 @@ public:
 
     DoubleStack(DoubleStack &&other) {
         pTop = other.pTop;
-        lst = other.lst;
         nxt = other.nxt;
         size = other.size;
         other.pTop = nullptr;
-        other.lst = nullptr;
         other.nxt = nullptr;
         other.size = 0;
     }
@@ -66,14 +60,13 @@ public:
         nxt = newNode;
         pTop->last = nxt;
         pTop = newNode;
-        lst->next = pTop;
         size++;
     }
 
     T pop() override {
         if (size <= 0) {
             delete this;
-            pTop = lst = nxt = nullptr;
+            pTop = nxt = nullptr;
         } else {
             T value = pTop->value;
             DoubleNode<T> *temp;
@@ -82,7 +75,6 @@ public:
             pTop = temp;
             pTop->last = nullptr;
             nxt = nullptr;
-            lst->next = pTop;
             size--;
             return value;
         }
@@ -106,7 +98,6 @@ public:
     void assignValue(const DoubleStack &source) {
         this->~DoubleStack();
         pTop = nullptr;
-        lst = nullptr;
         nxt = nullptr;
         size = 0;
         DoubleStack temp;
@@ -140,10 +131,12 @@ public:
         if (node.size > 0) {
             DoubleNode<T> *temp;
             temp = node.pTop;
+            int tempSize = 0;
             do {
                 out << temp->value << " ";
                 temp = temp->next;
-            } while (temp != node.pTop);
+                tempSize++;
+            } while (tempSize < node.size);
             return out;
         } else {
             out << "The list does not exist";
