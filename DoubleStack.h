@@ -1,13 +1,12 @@
 #include <ostream>
 #include "DoubleNode.h"
-#include "Structure.h"
 
 template<typename T>
 class DoubleStack : public Structure<T>{
 public:
-    DoubleNode<T> pTop;
-    DoubleNode<T> lst;
-    DoubleNode<T> nxt;
+    DoubleNode<T> *pTop;
+    DoubleNode<T> *lst;
+    DoubleNode<T> *nxt;
     int size = 0;
 
     void init(T value) {
@@ -23,7 +22,7 @@ public:
     }
 
     void copy(const DoubleStack &source) {
-        Node<T> *temp = source.pTop->next;
+        DoubleNode<T> *temp = source.pTop->next;
         do {
             push(temp->value);
             temp = temp->next;
@@ -63,7 +62,9 @@ public:
         auto *newNode = new DoubleNode<T>;
         newNode->value = value;
         newNode->next = pTop;
-        pTop->last = newNode;
+        newNode->last = nullptr;
+        nxt = newNode;
+        pTop->last = nxt;
         pTop = newNode;
         lst->next = pTop;
         size++;
@@ -72,13 +73,15 @@ public:
     T pop() override {
         if (size <= 0) {
             delete this;
-            pTop = lst = nullptr;
+            pTop = lst = nxt = nullptr;
         } else {
             T value = pTop->value;
-            Node<T> *temp;
+            DoubleNode<T> *temp;
             temp = pTop->next;
             delete pTop;
             pTop = temp;
+            pTop->last = nullptr;
+            nxt = nullptr;
             lst->next = pTop;
             size--;
             return value;
@@ -101,9 +104,10 @@ public:
     }
 
     void assignValue(const DoubleStack &source) {
-        this->~Stack();
+        this->~DoubleStack();
         pTop = nullptr;
         lst = nullptr;
+        nxt = nullptr;
         size = 0;
         DoubleStack temp;
         temp.init(source.pTop->value);
@@ -128,12 +132,13 @@ public:
         source.size = 0;
         source.pTop = nullptr;
         source.lst = nullptr;
+        source.nxt = nullptr;
         return *this;
     }
 
     friend std::ostream &operator<<(std::ostream &out, const DoubleStack<T> &node) {
         if (node.size > 0) {
-            Node<T> *temp;
+            DoubleNode<T> *temp;
             temp = node.pTop;
             do {
                 out << temp->value << " ";
