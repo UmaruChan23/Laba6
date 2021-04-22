@@ -9,4 +9,15 @@ public:
     virtual T peek() = 0;
 
     virtual int getSize() const = 0;
+
+    friend std::ostream& operator<<(std::ostream &out, const Structure<T> *p)
+    {
+        return p->print(out);
+    }
+
+    virtual std::ostream& print(std::ostream& out) const
+    {
+        out << "Parent";
+        return out;
+    }
 };

@@ -124,14 +124,15 @@ public:
         return *this;
     }
 
-    friend std::ostream &operator<<(std::ostream &out, const Stack<T> &node) {
-        if (node.size > 0) {
+    virtual std::ostream& print(std::ostream& out) const override
+    {
+        if (this->size > 0) {
             Node<T> *temp;
-            temp = node.pTop;
+            temp = this->pTop;
             do {
                 out << temp->value << " ";
                 temp = temp->next;
-            } while (temp != node.pTop);
+            } while (temp != this->pTop);
             return out;
         } else {
             out << "The list does not exist";

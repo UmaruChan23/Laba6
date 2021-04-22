@@ -127,16 +127,17 @@ public:
         return *this;
     }
 
-    friend std::ostream &operator<<(std::ostream &out, const DoubleStack<T> &node) {
-        if (node.size > 0) {
+    virtual std::ostream& print(std::ostream& out) const override
+    {
+        if (this->size > 0) {
             DoubleNode<T> *temp;
-            temp = node.pTop;
+            temp = this->pTop;
             int tempSize = 0;
             do {
                 out << temp->value << " ";
                 temp = temp->next;
                 tempSize++;
-            } while (tempSize < node.size);
+            } while (tempSize < this->size);
             return out;
         } else {
             out << "The list does not exist";
