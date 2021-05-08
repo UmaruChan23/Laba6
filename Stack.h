@@ -4,11 +4,10 @@
 
 template<typename T>
 class Stack : public Structure<T>{
-public:
     Node<T> *pTop;
     Node<T> *lst;
     int size = 0;
-
+public:
     void init(T value) {
         auto *root = new Node<T>;
         root->value = value;

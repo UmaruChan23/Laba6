@@ -3,11 +3,10 @@
 
 template<typename T>
 class DoubleStack : public Structure<T>{
-public:
     DoubleNode<T> *pTop;
     DoubleNode<T> *nxt;
     int size = 0;
-
+public:
     void init(T value) {
         auto *root = new DoubleNode<T>;
         root->value = value;
